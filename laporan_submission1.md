@@ -113,7 +113,7 @@ Model yang digunakan pada proyek ini adalah:
 | K-Nearest Neighbor | Memiliki performa baik untuk data yang kecil (data para proyek ini hanya ~1000) | Kinerja mungkin turun ketika berhadapan dengan data berdimensi tinggi |
 | Random Forest | Memiliki ketahanan yang baik terhadap overfitting | Mungkin membutuhkan banyak memori |
 | Adaboost | Memiliki ketahanan yang baik terhadap overfitting| Memerlukan data yang seimbang |
-| Support Vector Machine | Memiliki performa baik untuk data berdimensi tinggi | Kinerja mungkin turun pada dataset yang besar |
+| Decision Tree | dapat memetakan hubungan yang kompleks dan non-linear antara fitur dan variabel target. | Rentan terhadap overfitting |
 
 
 ## Evaluation
@@ -134,23 +134,19 @@ Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya 
 
 | Model | Train | Test |
 | --- | --- | --- |
-| KNN |	0.031414 |	0.023666 |
-| Random Forest |	0.000083 |	0.000363 |
-| Boosting |	0.04001 |	0.037285 |
-| SVM |	0.484086 |	0.248029 |
+| KNN	| 0.050712	| 0.068404
+| RF	| 0.000093	| 0.000714
+| Boosting	| 0.031089	| 0.02306
+| DecisionTree	| 0.0	| 0.000962
 
 Hasil perhitungan MSE masing-masing model divisualisasikan pada gambar sebagai berikut
 
 ![nilai MSE masing-masing model](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/perbandinganMSE.png)
 
-Dapat dilihat bahwa performa model dari Random Forest adalah yang terbaik. Hal ini sesuai dengan kelebihan dari algoritma yang disebutkan sebelumnya
+Dapat dilihat bahwa performa dari model Random Forest dan Decision tree mendekati nol, yang berarti kedua model ini adalah model terbaik. Tetapi, dilihat dari performa Trainnya, ada kemungkinan terjadi overfitting pada Decision Tree, hal ini dapat dilihat pada nilai MSE testingnya yang lebih besar daripada Random Forest. Sehingga dapat disimpulkan bahwa Random Forest adalah yang terbaik untuk kasus prediksi Standar Kualitas Udara ini.
 
 **Referensi**
 [1] Istiqomah, N. A., & Marleni, N. N. N. (2020, November). Particulate air pollution in Indonesia: quality index, characteristic, and source identification. In IOP Conference Series: Earth and Environmental Science (Vol. 599, No. 1, p. 012084). IOP Publishing.
 [2] Anurogo, D., Sulaeman, S., Yamtana, Y., & Andarmoyo, S. (2023). Assessing the Impact of Air Quality on Respiratory Health in Urban Environments: A Case Study of Tangerang. West Science Interdisciplinary Studies, 1(10), 940-951.
 
 **---Ini adalah bagian akhir laporan---**
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
