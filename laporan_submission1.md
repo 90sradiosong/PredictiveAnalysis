@@ -29,6 +29,7 @@ Data yang digunakan pada proyek ini adalah data yang diunggah oleh user Tangeran
 
 Dataset ini terdiri atas 1096 baris dan 10 kolom
 
+
 ### Variabel-variabel pada dataset Air Quality in South Tangerang adalah sebagai berikut
 | Nama | Keterangan|
 | --- | ------ |
@@ -43,10 +44,13 @@ Dataset ini terdiri atas 1096 baris dan 10 kolom
 | Category | Kategori dari polusi udara, berdasarkan nilai pengukuran tertinggi | 
 
 
-###Target Variable
+### Target Variable
 Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 
-##Distribusi Variable
+### Null Data
+Berdasarkan hasil analisis, ditemukan bahwa dari 1096 baris terdapat 60 data yang tidak ada nilainya. Ke-60 baris data ini kemudian dihapus dari tabel.
+
+### Distribusi Variable
 Nilai target variabel max kemudian diterjemahkan menjadi 3 kategori, yaitu:
 | Range | Kategori |
 | ----- | -------- |
@@ -56,18 +60,46 @@ Nilai target variabel max kemudian diterjemahkan menjadi 3 kategori, yaitu:
 | 201-300	| Very Unhealthy |
 | 300++	 | Dangerous |
 
-Kategori tersebut kemudian divisualisasikan sebagai berikut:
+Distribusi data pada masing-masing divisualisasikan sebagai berikut:
 
-![Distribusi Kategori](https://github.com/user-attachments/assets/aacd855c-8103-4fb9-8a11-a7ae4bf0ad6b)
+![Distribusi Kategori](https://github.com/90sradiosong/PredictiveAnalysis/blob/8772715fadeebcc9fc75cda8670f5c984cd18537/images/distribusikategori.png)
 
 dapat dilihat secara umum melalui data tersebut, bahwa sebaran data yang ada bersifat imbalance. Hal ini kemudian akan ditangani melalui proses re-sampling pada sub-bab Data Preparation.
 
+### Correlation Matrix
+Untuk mengetahui korelasi antar data numerikal yang ada pada dataset, dilakukan pembuatan matriks korelasi yang dapat dilihat pada gambar berikut
+
+![Matriks Korelasi] (https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/matrikskorelasi.png)
+
+Berdasarkan matriks korelasi tersebut, diketahui bahwa korelasi data numerik dengan variabel target Max adalah sebagai berikut:
+- PM2.5 berkorelasi negatif lemah
+- PM10 berkorelasi positif lemah
+- SO2 berkorelasi negatif lemah
+- CO berkorelasi positif dengan kuat
+- O3 berkorelasi positif
+- NO2 berkorelasi negatif lemah
+
+disimpulkan bahwa seluruh data numerik berkorelasi dengan variabel target meskipun sebagian berkorelasi lemah. Sehingga pada proyek ini seluruh data numerik digunakan dan tidak ada yang di-drop.
+
 ## Data Preparation
-Terdapat 2 tahapan yang dilakukan pada tahap data preparation, yaitu:
+Terdapat 3 tahapan yang dilakukan pada tahap data preparation, yaitu:
 - Encoding data "Date" menjadi 3 kolom, "day", "month", dan "year"
 - Melakukan One Hot Encoding untuk data "Critical Component"
 - Resampling data berdasarkan "Category" untuk menghasilkan data yang lebih balance
 
+### Encoding
+Terdapat 2 data kategorikal pada dataset yaitu Date dan Critical Component. Untuk dapat diproses oleh model, maka dilakukan encoding terhadap data-data tersebut. Data Date berformat dd\mm\yyyy, sehingga dilakukan pembagian data menjadi 3 kolom yaitu "Day" yang menyimpan data dd, "Month" yang menyimpan data mm, dan "Year" yang menyimpan data "yyyy"
+
+Selanjutnya data Critical Component adalah data yang bersifat nominal, sehingga dapat diterapkan One Hot Encoding yang menghasilkan 8 kolom baru.
+
+Berikut adalah deskripsi data setelah encoding
+
+![Encoded Data](https://github.com/90sradiosong/PredictiveAnalysis/blob/de34f3541d9de6a1acb778456341729abb6d8f09/images/deskripsidataencoded.png)
+
+### Resampling
+Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan keseimbangan pada data. Resampling dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). Teknik ini dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data sedelah dilakukan oversampling:
+
+![Distribusi Kategori setelah Resampling](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/distribusisetelahresample.png)
 
 ## Modeling
 Model yang digunakan pada proyek ini adalah:
@@ -75,6 +107,7 @@ Model yang digunakan pada proyek ini adalah:
 - Random Forest
 - Adaboost
 - Support Vector Machine
+  
 | Model | Kelebihan | Kekurangan |
 | --- | --- | --- |
 | K-Nearest Neighbor | Memiliki performa baik untuk data yang kecil (data para proyek ini hanya ~1000) | Kinerja mungkin turun ketika berhadapan dengan data berdimensi tinggi |
@@ -99,6 +132,18 @@ dengan:
 ### Evaluasi Model
 Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya adalah sebagai berikut
 
+| Model | Train | Test |
+| --- | --- | --- |
+| KNN |	0.031414 |	0.023666 |
+| Random Forest |	0.000083 |	0.000363 |
+| Boosting |	0.04001 |	0.037285 |
+| SVM |	0.484086 |	0.248029 |
+
+Hasil perhitungan MSE masing-masing model divisualisasikan pada gambar sebagai berikut
+
+![nilai MSE masing-masing model](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/perbandinganMSE.png)
+
+Dapat dilihat bahwa performa model dari Random Forest adalah yang terbaik. Hal ini sesuai dengan kelebihan dari algoritma yang disebutkan sebelumnya
 
 **Referensi**
 [1] Istiqomah, N. A., & Marleni, N. N. N. (2020, November). Particulate air pollution in Indonesia: quality index, characteristic, and source identification. In IOP Conference Series: Earth and Environmental Science (Vol. 599, No. 1, p. 012084). IOP Publishing.
