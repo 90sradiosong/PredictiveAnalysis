@@ -30,48 +30,75 @@ Data yang digunakan pada proyek ini adalah data yang diunggah oleh user Tangeran
 Dataset ini terdiri atas 1096 baris dan 10 kolom
 
 ### Variabel-variabel pada dataset Air Quality in South Tangerang adalah sebagai berikut
-| Nama | Jenis | Keterangan| Variabel |
-| --- | ----- | ------ | ------ |
-| Date | Kategorikal Nominal | Tanggal pengambilan data | ------ |
-| PM10 | Numerik Kontinu | Hasil pengukuran Particulate Matter | ------ |
-| SO2 | Numerik Kontinu | Hasil pengukuran sulfur dioksida | ------ |
-| CO | Numerik Kontinu | Hasil Pengukuran Karbon Monoksidra | ------ |
-| O3 | Numerik Kontinu | Hasil Pengukuran Ozon | ------ |
-| NO2 | Numerik Kontinu | Hasil Pengukuran Natrium Dioksida | ------ |
-| Max | Numerik Kontinu | Nilai pengukuran tertinggi | ------ |
-| Critical Component | Kategorikal Nominal | Komponen dengan nilai pengukuran tertinggi | ------ |
-| Category | Kategorikal Nominal | Kategori dari polusi udara, berdasarkan nilai pengukuran tertinggi | ------ |
+| Nama | Keterangan|
+| --- | ------ |
+| Date | Tanggal pengambilan data |
+| PM10 | Hasil pengukuran Particulate Matter | 
+| SO2 | Hasil pengukuran sulfur dioksida |
+| CO | Hasil Pengukuran Karbon Monoksida |
+| O3 | Hasil Pengukuran Ozon | 
+| NO2 | Hasil Pengukuran Natrium Dioksida | 
+| Max | Nilai pengukuran tertinggi | 
+| Critical Component | Komponen dengan nilai pengukuran tertinggi | 
+| Category | Kategori dari polusi udara, berdasarkan nilai pengukuran tertinggi | 
 
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data atau exploratory data analysis.
+###Target Variable
+Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
+
+##Distribusi Variable
+Nilai target variabel max kemudian diterjemahkan menjadi 3 kategori, yaitu:
+| Range | Kategori |
+| ----- | -------- |
+| 0-50 |	Good |
+| 51-100	| Moderate |
+| 101-200	| Unhealthy |
+| 201-300	| Very Unhealthy |
+| 300++	 | Dangerous |
+
+Kategori tersebut kemudian divisualisasikan sebagai berikut:
+
+![Distribusi Kategori](https://github.com/user-attachments/assets/aacd855c-8103-4fb9-8a11-a7ae4bf0ad6b)
+
+dapat dilihat secara umum melalui data tersebut, bahwa sebaran data yang ada bersifat imbalance. Hal ini kemudian akan ditangani melalui proses re-sampling pada sub-bab Data Preparation.
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
+Terdapat 2 tahapan yang dilakukan pada tahap data preparation, yaitu:
+- Encoding data "Date" menjadi 3 kolom, "day", "month", dan "year"
+- Melakukan One Hot Encoding untuk data "Critical Component"
+- Resampling data berdasarkan "Category" untuk menghasilkan data yang lebih balance
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
 
 ## Modeling
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
+Model yang digunakan pada proyek ini adalah:
+- K-Nearest Neighbor
+- Random Forest
+- Adaboost
+- Support Vector Machine
+| Model | Kelebihan | Kekurangan |
+| --- | --- | --- |
+| K-Nearest Neighbor | Memiliki performa baik untuk data yang kecil (data para proyek ini hanya ~1000) | Kinerja mungkin turun ketika berhadapan dengan data berdimensi tinggi |
+| Random Forest | Memiliki ketahanan yang baik terhadap overfitting | Mungkin membutuhkan banyak memori |
+| Adaboost | Memiliki ketahanan yang baik terhadap overfitting| Memerlukan data yang seimbang |
+| Support Vector Machine | Memiliki performa baik untuk data berdimensi tinggi | Kinerja mungkin turun pada dataset yang besar |
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
 
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
+### Metrik Evaluasi
+Metrik evaluasi yang digunakan pada proyek ini adalah **mean squared error**. Metrik ini menghitung jumlah selisih kuadrat rata-rata nilai sebenarnya dengan nilai prediksi. Metrik ini dipilih pada proyek ini dikarenakan memerlukan pengukuran ketelitian yang baik untuk mendapatkan model terbaik.
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+Mean Squared Error didefinisikan dalam persamaan sebagai berikut 
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+$$MSE = \frac{1}{N} \sum_{i=1}^{N} (y_i - ypred_i )^2$$
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+dengan:
+- N: jumlah data
+- $$y_i$$: output target ke i
+- $$ypred_i$$: output hasil prediksi ke i
+
+### Evaluasi Model
+Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya adalah sebagai berikut
+
 
 **Referensi**
 [1] Istiqomah, N. A., & Marleni, N. N. N. (2020, November). Particulate air pollution in Indonesia: quality index, characteristic, and source identification. In IOP Conference Series: Earth and Environmental Science (Vol. 599, No. 1, p. 012084). IOP Publishing.
