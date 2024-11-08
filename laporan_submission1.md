@@ -50,6 +50,13 @@ Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 ### Null Data
 Berdasarkan hasil analisis, ditemukan bahwa dari 1096 baris terdapat 60 data yang tidak ada nilainya. Ke-60 baris data ini kemudian dihapus dari tabel.
 
+### Univariate Analysis
+Telah dilakukan analisis univariat pada data menggunakan box plot yang dapat dilihat pada gambar berikut:
+
+![boxplot](https://github.com/90sradiosong/PredictiveAnalysis/blob/c0342fc73cee1967f7d4e6f668a06ad3fffeeda2/images/boxplotsebelum.png)
+
+Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak balance. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
+
 ### Distribusi Variable
 Nilai target variabel max kemudian diterjemahkan menjadi 3 kategori, yaitu:
 | Range | Kategori |
@@ -94,19 +101,25 @@ Selanjutnya data Critical Component adalah data yang bersifat nominal, sehingga 
 
 Berikut adalah deskripsi data setelah encoding
 
-![Encoded Data](https://github.com/90sradiosong/PredictiveAnalysis/blob/de34f3541d9de6a1acb778456341729abb6d8f09/images/deskripsidataencoded.png)
+![Encoded Data](https://github.com/90sradiosong/PredictiveAnalysis/blob/513db589c84edf8f290195f3411522e85aeb67dc/images/deskripsidataencoded_small.png)
 
 ### Resampling
-Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan keseimbangan pada data. Resampling dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). Teknik ini dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data sedelah dilakukan oversampling:
+Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan keseimbangan pada data. Teknik resampling yang dipilih adalah oversampling yang dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). Teknik ini dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data sedelah dilakukan oversampling:
 
 ![Distribusi Kategori setelah Resampling](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/distribusisetelahresample.png)
+
+###Train-test split
+Pada proyek ini, data dibagi dengan rasio train:test $$80:20$$, jumlah data setelah dilakukan train-test split adalah sebagai berikut:
+- Total # of sample in whole dataset: 1737
+- Total # of sample in train dataset: 1389
+- Total # of sample in test dataset: 348
 
 ## Modeling
 Model yang digunakan pada proyek ini adalah:
 - K-Nearest Neighbor
 - Random Forest
 - Adaboost
-- Support Vector Machine
+- Decision Tree
   
 | Model | Kelebihan | Kekurangan |
 | --- | --- | --- |
@@ -134,10 +147,10 @@ Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya 
 
 | Model | Train | Test |
 | --- | --- | --- |
-| KNN	| 0.050712	| 0.068404
-| RF	| 0.000093	| 0.000714
-| Boosting	| 0.031089	| 0.02306
-| DecisionTree	| 0.0	| 0.000962
+| KNN	| 0.035685	| 0.03726
+| RF	| 0.000111	| 0.000346
+| Boosting	| 0.036502	| 0.036762
+| DecisionTree	| 0.0	| 0.000552
 
 Hasil perhitungan MSE masing-masing model divisualisasikan pada gambar sebagai berikut
 
