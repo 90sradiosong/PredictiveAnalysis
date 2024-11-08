@@ -76,7 +76,7 @@ dapat dilihat secara umum melalui data tersebut, bahwa sebaran data yang ada ber
 ### Correlation Matrix
 Untuk mengetahui korelasi antar data numerikal yang ada pada dataset, dilakukan pembuatan matriks korelasi yang dapat dilihat pada gambar berikut
 
-![Matriks Korelasi] (https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/matrikskorelasi.png)
+![Matriks Korelasi](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/matrikskorelasi.png)
 
 Berdasarkan matriks korelasi tersebut, diketahui bahwa korelasi data numerik dengan variabel target Max adalah sebagai berikut:
 - PM2.5 berkorelasi negatif lemah
@@ -108,7 +108,7 @@ Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan kesei
 
 ![Distribusi Kategori setelah Resampling](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/distribusisetelahresample.png)
 
-###Train-test split
+### Train-test split
 Pada proyek ini, data dibagi dengan rasio train:test $$80:20$$, jumlah data setelah dilakukan train-test split adalah sebagai berikut:
 - Total # of sample in whole dataset: 1737
 - Total # of sample in train dataset: 1389
@@ -154,12 +154,14 @@ Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya 
 
 Hasil perhitungan MSE masing-masing model divisualisasikan pada gambar sebagai berikut
 
-![nilai MSE masing-masing model](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/perbandinganMSE.png)
+![nilai MSE masing-masing model](https://github.com/90sradiosong/PredictiveAnalysis/blob/9d71a945785674186d5c3713d280d83c8ff37467/images/perbandinganMSE.png)
 
 Dapat dilihat bahwa performa dari model Random Forest dan Decision tree mendekati nol, yang berarti kedua model ini adalah model terbaik. Tetapi, dilihat dari performa Trainnya, ada kemungkinan terjadi overfitting pada Decision Tree, hal ini dapat dilihat pada nilai MSE testingnya yang lebih besar daripada Random Forest. Sehingga dapat disimpulkan bahwa Random Forest adalah yang terbaik untuk kasus prediksi Standar Kualitas Udara ini.
 
 **Referensi**
+
 [1] Istiqomah, N. A., & Marleni, N. N. N. (2020, November). Particulate air pollution in Indonesia: quality index, characteristic, and source identification. In IOP Conference Series: Earth and Environmental Science (Vol. 599, No. 1, p. 012084). IOP Publishing.
+
 [2] Anurogo, D., Sulaeman, S., Yamtana, Y., & Andarmoyo, S. (2023). Assessing the Impact of Air Quality on Respiratory Health in Urban Environments: A Case Study of Tangerang. West Science Interdisciplinary Studies, 1(10), 940-951.
 
 **---Ini adalah bagian akhir laporan---**
