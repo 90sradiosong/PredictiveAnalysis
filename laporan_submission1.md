@@ -11,18 +11,19 @@ Kualitas udara adalah salah satu aspek penting yang mempengaruhi kesehatan masya
 
 Berdasarkan latar belakang, maka permasalah pada proyek ini adalah sebagai berikut:
 - Bagaimana proses pengolahan data yang tepat agar dapat melakukan prediksi indeks standar kualitas menggunakan model yang tepat?
-- Bagaimana membuat sistem prediksi standar kualitas udara yang memiliki error yang rendah?
+- Bagaimana membangun dan mengukur model prediksi standar kualitas udara yang optimal?
 
 ### Goals
 
 Berdasarkan rumusan masalah, maka tujuan dari proyek ini adalah:
-- Melakukan analisis dan pengolahan terhadap data Standar Kualitas Udara
-- Membuat implementasi sistem prediksi dengan error yang rendah sehingga 
+- Melakukan analisis dan pengolahan terhadap data Standar Kualitas Udara.
+- Membangun model prediksi yang kemudian dievaluasi dengan MSE.
+- Menemukan model prediksi yang paling optimal untuk Standar Kualitas Udara.
 
 ### Solution statements
 Solusi yang ditawarkan untuk menyelesaikan tujuan adalah sebagai berikut:
-- Melakukan perbandingan 3 jenis algoritma untuk mendapatkan model yang terbaik
-- Melakukan evaluasi dengan menggunakan Mean Square Error (MSE)
+- Melakukan perbandingan 4 jenis algoritma untuk mendapatkan model yang terbaik.
+- Melakukan evaluasi dengan menggunakan Mean Square Error (MSE) dan menemukan model dengan nilai MSE paling optimal.
 
 ## Data Understanding
 Data yang digunakan pada proyek ini adalah data yang diunggah oleh user Tangerangupdate pada tahun 2023. Data tersebut diunggah pada website Kaggle dan dapat diakses pada pranala berikut ini [link](ourwit/air-quality-in-south-tangerang-indonesia-20-23)
@@ -53,7 +54,7 @@ Berdasarkan hasil analisis, ditemukan bahwa dari 1096 baris terdapat 60 data yan
 ### Univariate Analysis
 Telah dilakukan analisis univariat pada data menggunakan box plot yang dapat dilihat pada gambar berikut:
 
-![boxplot](https://github.com/90sradiosong/PredictiveAnalysis/blob/c0342fc73cee1967f7d4e6f668a06ad3fffeeda2/images/boxplotsebelum.png)
+![boxplotsebelum](https://github.com/user-attachments/assets/ee6b57b1-9066-42cb-9f72-8896cc67414c)
 
 Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak balance. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
 
@@ -69,14 +70,14 @@ Nilai target variabel max kemudian diterjemahkan menjadi 3 kategori, yaitu:
 
 Distribusi data pada masing-masing divisualisasikan sebagai berikut:
 
-![Distribusi Kategori](https://github.com/90sradiosong/PredictiveAnalysis/blob/8772715fadeebcc9fc75cda8670f5c984cd18537/images/distribusikategori.png)
+![distribusikategori](https://github.com/user-attachments/assets/7f80920b-515b-46ba-a201-cc43e769dde4)
 
 dapat dilihat secara umum melalui data tersebut, bahwa sebaran data yang ada bersifat imbalance. Hal ini kemudian akan ditangani melalui proses re-sampling pada sub-bab Data Preparation.
 
 ### Correlation Matrix
 Untuk mengetahui korelasi antar data numerikal yang ada pada dataset, dilakukan pembuatan matriks korelasi yang dapat dilihat pada gambar berikut
 
-![Matriks Korelasi](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/matrikskorelasi.png)
+![matrikskorelasi](https://github.com/user-attachments/assets/b104011c-4d60-4149-909b-e41680e1bf2b)
 
 Berdasarkan matriks korelasi tersebut, diketahui bahwa korelasi data numerik dengan variabel target Max adalah sebagai berikut:
 - PM2.5 berkorelasi negatif lemah
@@ -94,19 +95,23 @@ Terdapat 3 tahapan yang dilakukan pada tahap data preparation, yaitu:
 - Melakukan One Hot Encoding untuk data "Critical Component"
 - Resampling data berdasarkan "Category" untuk menghasilkan data yang lebih balance
 
-### Encoding
-Terdapat 2 data kategorikal pada dataset yaitu Date dan Critical Component. Untuk dapat diproses oleh model, maka dilakukan encoding terhadap data-data tersebut. Data Date berformat dd\mm\yyyy, sehingga dilakukan pembagian data menjadi 3 kolom yaitu "Day" yang menyimpan data dd, "Month" yang menyimpan data mm, dan "Year" yang menyimpan data "yyyy"
+### Feature Engineering
+Terdapat data yang masih berupa object yaitu Date. Data Date berformat dd\mm\yyyy, sehingga dilakukan pembagian data menjadi 3 kolom yaitu "Day" yang menyimpan data dd, "Month" yang menyimpan data mm, dan "Year" yang menyimpan data "yyyy"
 
-Selanjutnya data Critical Component adalah data yang bersifat nominal, sehingga dapat diterapkan One Hot Encoding yang menghasilkan 8 kolom baru.
+### Encoding
+Data Critical Component adalah data yang bersifat kategoikal. Untuk dapat diproses oleh model, maka perlu dilakukan encoding terhadap data tersebut.
+
+Dikarenakan data Critical Component adalah data yang bersifat nominal, sehingga dapat diterapkan One Hot Encoding yang menghasilkan 8 kolom baru.
 
 Berikut adalah deskripsi data setelah encoding
 
-![Encoded Data](https://github.com/90sradiosong/PredictiveAnalysis/blob/513db589c84edf8f290195f3411522e85aeb67dc/images/deskripsidataencoded_small.png)
+![deskripsidataencoded_small](https://github.com/user-attachments/assets/834f5c70-a3eb-4940-8412-0781e48eb2d4)
 
 ### Resampling
-Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan keseimbangan pada data. Teknik resampling yang dipilih adalah oversampling yang dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). Teknik ini dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data sedelah dilakukan oversampling:
+Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan keseimbangan pada data. Teknik resampling
+ yang dipilih adalah oversampling yang dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). Teknik ini dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data sedelah dilakukan oversampling:
 
-![Distribusi Kategori setelah Resampling](https://github.com/90sradiosong/PredictiveAnalysis/blob/a5bba1617a16d023f0ff1ea64e4b4ea406e79725/images/distribusisetelahresample.png)
+![distribusisetelahresample](https://github.com/user-attachments/assets/47600a37-7179-488b-8064-ec53a766aad2)
 
 ### Train-test split
 Pada proyek ini, data dibagi dengan rasio train:test $$80:20$$, jumlah data setelah dilakukan train-test split adalah sebagai berikut:
@@ -121,12 +126,12 @@ Model yang digunakan pada proyek ini adalah:
 - Adaboost
 - Decision Tree
   
-| Model | Kelebihan | Kekurangan |
-| --- | --- | --- |
-| K-Nearest Neighbor | Memiliki performa baik untuk data yang kecil (data para proyek ini hanya ~1000) | Kinerja mungkin turun ketika berhadapan dengan data berdimensi tinggi |
-| Random Forest | Memiliki ketahanan yang baik terhadap overfitting | Mungkin membutuhkan banyak memori |
-| Adaboost | Memiliki ketahanan yang baik terhadap overfitting| Memerlukan data yang seimbang |
-| Decision Tree | dapat memetakan hubungan yang kompleks dan non-linear antara fitur dan variabel target. | Rentan terhadap overfitting |
+| Model | Kelebihan | Kekurangan | Parameter yang digunakan |
+| --- | --- | --- | --- |
+| K-Nearest Neighbor | Memiliki performa baik untuk data yang kecil (data para proyek ini hanya ~1000) | Kinerja mungkin turun ketika berhadapan dengan data berdimensi tinggi | *n_neighbors* = 10, diharapkan menghasilkan prediksi yang lebih mangkus karena menggunakan neighborhood yang lebih besar dari default |
+| Random Forest | Memiliki ketahanan yang baik terhadap overfitting | Mungkin membutuhkan banyak memori |  *n_estimators*=50, menggunakan 50 tree pada forest, *max_depth*=16, kedalaman maksimum dari masing-masing tree adalah 16, *random_state*=55, seed untuk random number generator, agar dapat direproduksi kembali, *n_jobs*=-1, menggunakan semua CPU cores | 
+| Adaboost | Memiliki ketahanan yang baik terhadap overfitting| Memerlukan data yang seimbang | *learning_rate*=0.05, untuk menghasilkan model yang baik, disarankan learning rate berada di antara 0.01 dan 0.1., *random_state*=55, seed untuk random number generator, agar dapat direproduksi kembali | 
+| Decision Tree | dapat memetakan hubungan yang kompleks dan non-linear antara fitur dan variabel target. | Rentan terhadap overfitting | *random_state*=42, seed untuk random number generator, agar dapat direproduksi kembali |
 
 
 ## Evaluation
@@ -154,9 +159,11 @@ Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya 
 
 Hasil perhitungan MSE masing-masing model divisualisasikan pada gambar sebagai berikut
 
-![nilai MSE masing-masing model](https://github.com/90sradiosong/PredictiveAnalysis/blob/9d71a945785674186d5c3713d280d83c8ff37467/images/perbandinganMSE.png)
+![perbandinganMSE](https://github.com/user-attachments/assets/5ab1ad76-09d9-4d3c-89fa-f15ebc7ed629)
 
 Dapat dilihat bahwa performa dari model Random Forest dan Decision tree mendekati nol, yang berarti kedua model ini adalah model terbaik. Tetapi, dilihat dari performa Trainnya, ada kemungkinan terjadi overfitting pada Decision Tree, hal ini dapat dilihat pada nilai MSE testingnya yang lebih besar daripada Random Forest. Sehingga dapat disimpulkan bahwa Random Forest adalah yang terbaik untuk kasus prediksi Standar Kualitas Udara ini.
+
+Pada project ini telah dilakukan beberapa tahapan untuk mencapai solusi yang diinginkan. Pertama, data Standar Kualitas Udara telah dianalisis dan di-proses untuk menghasilkan data yang siap digunakan sebagai input dari model. Berdasarkan proses analisis, ditemukan bahwa data bersifat *imbalance* sehingga dilakukan proses resampling dengan SMOTE. Selanjutnya, 4 buah model prediksi telah dibangun dan dievaluasi menggunakan nilai MSE. Berdasarkan nilai MSE-nya, model yang paling optimal adalah Random Forest.
 
 **Referensi**
 
