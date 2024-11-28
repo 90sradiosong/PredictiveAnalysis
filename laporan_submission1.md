@@ -128,7 +128,7 @@ Untuk memastikan bahwa data yang menjadi input dari pelatihan dan evaluasi model
 ## Modeling
 Model yang digunakan pada proyek ini adalah:
 - K-Nearest Neighbor: algoritma K-NN memprediksi nilai data baru dengan membandingkan jaraknya ke sejumlah 
-k tetangga terdekat berdasarkan kesamaan fitur dalam data pelatihan.
+k tetangga terdekat berdasarkan kesamaan fitur dalam data pelatihan. 
 - Random Forest: algoritma Random Forest adalah algoritma ensemble learning yang membentuk data menjadi sekumpulan decision tree. Hasil keputusan yang diambil pada algoritma ini umumnya diambil dari rata-rata nilai keputusan dari masing-masing decision tree.
 - Ada Boost: algoritma ensemble ini menggabungkan beberapa *weak learners* untuk menjadi satu model yang lebih kuat.
 - Decision Tree: algoritma ini membagi data menjadi *branches* pada sebuah tree berdasarkan fitur tertentu. Hasil prediksi yang dihasilkan adalah rata-rata nilai target pada *leaf*nya.
