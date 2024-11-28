@@ -48,9 +48,6 @@ Dataset ini terdiri atas 1096 baris dan 10 kolom
 ### Target Variable
 Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 
-### Null Data
-Berdasarkan hasil analisis, ditemukan bahwa dari 1096 baris terdapat 60 data yang tidak ada nilainya. Ke-60 baris data ini kemudian dihapus dari tabel.
-
 ### Univariate Analysis
 Telah dilakukan analisis univariat pada data menggunakan box plot yang dapat dilihat pada gambar berikut:
 
@@ -90,16 +87,22 @@ Berdasarkan matriks korelasi tersebut, diketahui bahwa korelasi data numerik den
 disimpulkan bahwa seluruh data numerik berkorelasi dengan variabel target meskipun sebagian berkorelasi lemah. Sehingga pada proyek ini seluruh data numerik digunakan dan tidak ada yang di-drop.
 
 ## Data Preparation
-Terdapat 3 tahapan yang dilakukan pada tahap data preparation, yaitu:
-- Encoding data "Date" menjadi 3 kolom, "day", "month", dan "year"
+Terdapat beberapa tahapan yang dilakukan pada tahap data preparation, yaitu:
+- Handling Missing Value 
+- Feature Engineering dengan memecah kolom "Date" menjadi 3 kolom, "day", "month", dan "year"
 - Melakukan One Hot Encoding untuk data "Critical Component"
 - Resampling data berdasarkan "Category" untuk menghasilkan data yang lebih balance
+- Pembagian data menjadi train set dan test set
+- Standarisasi Data
+
+### Handling Missing Value
+Berdasarkan hasil analisis, ditemukan bahwa dari 1096 baris terdapat 60 data yang tidak ada nilainya. Ke-60 baris data ini kemudian dihapus dari tabel.
 
 ### Feature Engineering
 Terdapat data yang masih berupa object yaitu Date. Data Date berformat dd\mm\yyyy, sehingga dilakukan pembagian data menjadi 3 kolom yaitu "Day" yang menyimpan data dd, "Month" yang menyimpan data mm, dan "Year" yang menyimpan data "yyyy"
 
 ### Encoding
-Data Critical Component adalah data yang bersifat kategoikal. Untuk dapat diproses oleh model, maka perlu dilakukan encoding terhadap data tersebut.
+Data Critical Component adalah data yang bersifat kategorikal. Untuk dapat diproses oleh model, maka perlu dilakukan encoding terhadap data tersebut.
 
 Dikarenakan data Critical Component adalah data yang bersifat nominal, sehingga dapat diterapkan One Hot Encoding yang menghasilkan 8 kolom baru.
 
@@ -119,12 +122,18 @@ Pada proyek ini, data dibagi dengan rasio train:test $$80:20$$, jumlah data sete
 - Total # of sample in train dataset: 1389
 - Total # of sample in test dataset: 348
 
+### Standarisasi Data
+Untuk memastikan bahwa data yang menjadi input dari pelatihan dan evaluasi model terstandar dengan baik, maka dilakukan normalisasi data dengan Standard Scaler.
+
 ## Modeling
 Model yang digunakan pada proyek ini adalah:
-- K-Nearest Neighbor
-- Random Forest
-- Adaboost
-- Decision Tree
+- K-Nearest Neighbor: algoritma K-NN memprediksi nilai data baru dengan membandingkan jaraknya ke sejumlah 
+k tetangga terdekat berdasarkan kesamaan fitur dalam data pelatihan.
+- Random Forest: algoritma Random Forest adalah algoritma ensemble learning yang membentuk data menjadi sekumpulan decision tree. Hasil keputusan yang diambil pada algoritma ini umumnya diambil dari rata-rata nilai keputusan dari masing-masing decision tree.
+- Ada Boost: algoritma ensemble ini menggabungkan beberapa *weak learners* untuk menjadi satu model yang lebih kuat.
+- Decision Tree: algoritma ini membagi data menjadi *branches* pada sebuah tree berdasarkan fitur tertentu. Hasil prediksi yang dihasilkan adalah rata-rata nilai target pada *leaf*nya.
+
+Adapun kelebihan dan kekurangan masing-masing model serta parameter yang digunakan pada project ini adalah sebagai berikut:
   
 | Model | Kelebihan | Kekurangan | Parameter yang digunakan |
 | --- | --- | --- | --- |
