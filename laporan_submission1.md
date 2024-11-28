@@ -53,10 +53,10 @@ Telah dilakukan analisis univariat pada data menggunakan box plot yang dapat dil
 
 ![boxplotsebelum](https://github.com/user-attachments/assets/ee6b57b1-9066-42cb-9f72-8896cc67414c)
 
-Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak balance. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
+Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data pencilan dilakukan hanya pada variabel PM10 dan O3. Sedangkan pada CO dan Max, penghapusan tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak balance. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
 
 ### Distribusi Variable
-Nilai target variabel max kemudian diterjemahkan menjadi 3 kategori, yaitu:
+Nilai target variabel Max kemudian diterjemahkan menjadi 3 kategori, yaitu:
 | Range | Kategori |
 | ----- | -------- |
 | 0-50 |	Good |
