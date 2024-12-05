@@ -1,8 +1,8 @@
-# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning - Anggina Primanita
 
 ## Project Overview
 
-Pada bagian ini, Kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
+Game Digital adalah aplikasi perangkat lunak yang paling dekat dengan manusia. Sa'at ini, dalam satu tahun ada banyak sekali game yang dirilis, sehingga sulit untuk menemukan game yang sesuai dengan minat pemain. Salah satu pembeda satu game dengan game yang lain adalah genre-nya. Umumnya, pemain akan menyukai game dengan genre serupa, tetapi, sa'at ini sebuah game bisa memiliki lebih dari satu genre. Untuk itu, diperlukan suatu sistem rekomendasi yang dapat memberikan rekomenadasi game yang sesuai dengan minat pemain berdasarkan genrenya.
 
 **Rubrik/Kriteria Tambahan (Opsional)**:
 - Jelaskan mengapa proyek ini penting untuk diselesaikan.
@@ -11,6 +11,8 @@ Pada bagian ini, Kamu perlu menuliskan latar belakang yang relevan dengan proyek
   Format Referensi: [Judul Referensi](https://scholar.google.com/) 
 
 ## Business Understanding
+
+
 
 Pada bagian ini, Anda perlu menjelaskan proses klarifikasi masalah.
 
