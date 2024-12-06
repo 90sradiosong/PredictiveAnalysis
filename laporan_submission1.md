@@ -28,10 +28,11 @@ Solusi yang ditawarkan untuk menyelesaikan tujuan adalah sebagai berikut:
 ## Data Understanding
 Data yang digunakan pada proyek ini adalah data yang diunggah oleh user Tangerangupdate pada tahun 2023. Data tersebut diunggah pada website Kaggle dan dapat diakses pada pranala berikut ini [link](ourwit/air-quality-in-south-tangerang-indonesia-20-23)
 
-Dataset ini terdiri atas 1096 baris dan 10 kolom
+Dataset ini terdiri atas 1096 baris dan 10 kolom.
 
+### Deskripsi Variabel
 
-### Variabel-variabel pada dataset Air Quality in South Tangerang adalah sebagai berikut
+Variabel-variabel pada dataset Air Quality in South Tangerang adalah sebagai berikut
 | Nama | Keterangan|
 | --- | ------ |
 | Date | Tanggal pengambilan data |
@@ -48,14 +49,25 @@ Dataset ini terdiri atas 1096 baris dan 10 kolom
 ### Target Variable
 Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 
-### Univariate Analysis
+### Analisis Data Kosong dan Duplikat
+
+Dari 1096 data, tidak ada data pengukuran yang tanggalnya (kolom Date) bersifat duplikat. Sehingga tidak dilakukan penghapusan data duplikat. Kemudian dilakukan pengecekan terhadap data yang bersifat null. Pada tahap ini, ditemukan 60 data yang pengukuran O3 (Ozon)-nya bernilai null.
+
+### Analisis dan Handling Outliers
 Telah dilakukan analisis univariat pada data menggunakan box plot yang dapat dilihat pada gambar berikut:
 
 ![boxplotsebelum](https://github.com/user-attachments/assets/ee6b57b1-9066-42cb-9f72-8896cc67414c)
 
-Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data pencilan dilakukan hanya pada variabel PM10 dan O3. Sedangkan pada CO dan Max, penghapusan tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak balance. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
+Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data pencilan dilakukan hanya pada variabel PM10 dan O3. Sedangkan pada CO dan Max, penghapusan tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak seimbang. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
 
-### Distribusi Variable
+Penghapusan data outlier dilakukan dengan langkah-langkah sebagai berikut:
+1. Menemukan kuartil 1 (Q1) dan kuartil 3(Q3) dari data berdasarkan PM10 dan O3.
+2. Menemukan Inter Quartile Range (IQR) dari data dengan menghitung selisih antara Q1 dan Q3
+3. Menghapus data outlier yang nilainya kurang dari $$Q1 - 1.5 * IQR$$ atau lebih besar dari $$Q3 + 1.5 * IQR$$
+
+Hasil dari penghapusan outlier adalah 642 baris data.
+
+### Univariate Analysis
 Nilai target variabel Max kemudian diterjemahkan menjadi 3 kategori, yaitu:
 | Range | Kategori |
 | ----- | -------- |
@@ -71,7 +83,7 @@ Distribusi data pada masing-masing divisualisasikan sebagai berikut:
 
 dapat dilihat secara umum melalui data tersebut, bahwa sebaran data yang ada bersifat imbalance. Hal ini kemudian akan ditangani melalui proses re-sampling pada sub-bab Data Preparation.
 
-### Correlation Matrix
+### Multivariate Data Analysis
 Untuk mengetahui korelasi antar data numerikal yang ada pada dataset, dilakukan pembuatan matriks korelasi yang dapat dilihat pada gambar berikut
 
 ![matrikskorelasi](https://github.com/user-attachments/assets/b104011c-4d60-4149-909b-e41680e1bf2b)
