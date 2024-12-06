@@ -20,52 +20,72 @@ Bagian laporan ini mencakup:
 
 ### Problem Statements
 
-Menjelaskan pernyataan masalah:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+Rumusan masalah dari proyek ini adalah:
+1. Bagaimana membangun model rekomendasi permainan berdasarkan genrenya?
+2. Bagaimana mengevaluasi model rekomendasi permainan berdasarkan genrenya?
 
 ### Goals
 
-Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
+Tujuan dari proyek ini adalah:
+- Membangun model rekomendasi berdasarkan genre
+- Mengevaluasi model rekomendasi
 
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
+### Solution Statements
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Approach” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
+Pendekatan yang dilakukan untuk mencapai tujuan adalah:
+- Menggunakan model content-based filtering
+- Melakukan evaluasi 
 
-    ### Solution statements
-    - Mengajukan 2 atau lebih solution approach (algoritma atau pendekatan sistem rekomendasi).
+
 
 ## Data Understanding
-Paragraf awal bagian ini menjelaskan informasi mengenai jumlah data, kondisi data, dan informasi mengenai data yang digunakan. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
+Data yang digunakan pada proyek ini adalah data yang bersumber dari Kaggle yang bernama Top Games Dataset yang diunggah oleh user Waqar Ali yang terakhir diupdate pada tahun 2024. Dataset ini dapat diakses pada link berikut [link dataset] (https://www.kaggle.com/datasets/waqi786/top-games-dataset). Top Games Dataset memiliki 5000 baris data dan 5 kolom.
 
-Selanjutnya, uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
+Variabel-variabel pada Top Games Dataset adalah sebagai berikut:
+- Game Name: nama dari game
+- Genre: genre dari game. Kolom ini hanya menyimpan 1 genre game
+- Platform: platform dimana game dirilis
+- Release Year: tahun rilis game. Dataset ini berisi game yang dirilis pada rentang tahun 2000-2023
+- User Rating: rating dari game
 
-Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
+### Data Insight
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data beserta insight atau exploratory data analysis.
+Dilakukan pengecekan terhadap jumlah game, genre, dan platform yang ada pada dataset. Berdasarkan hasil pengecekan, diketahui bahwa dataset berisi 58 game, 15 genre, dan 5 platform. 5000 data yang ada pada dataset dihasilkan dari beberapa kombinasi yang berbeda, contohnya, 1 game dapat memiliki beberapa genre atau memiliki beberapa user rating.
+
+Berdasarkan pengecekan duplikasi data, ditemukan bahwa tidak ada data yang bersifat dupblikat, sedangkan pengecekan untuk missing data dilakukan dengan pengecekan entry yang bernilai null. Hasil pengecekan menyatakan bahwa tidak ada entry yang bernilai null. 
+
+### Univariate Analysis
+
+Univariate Data Analysis dilakukan dengan menampilkan histogram dari 2 kolom, yaitu platform dan genre. Histogram menampilkan frekuensi kemunculan masing-masing platform dan genre.
+
+![univariate histogram](https://github.com/user-attachments/assets/d08f24b9-9668-4c59-84f7-46ea284163ee)
+
+Histogram dari genre game menunjukkan bahwa terdapat genre yang sangat dominan, yaitu Genre Sports. Terdapat 7 game dengan genre sports, yang artinya game ini sangat populer. Sebaliknya hanya terdapat 1 game dengan genre Action, yang artinya game ini jarang ditemui.
+
+Histogram dari platform game menunjukkan bahwa platform yang paling populer adalah PlayStation, sedangkan platform lainnya memiliki jumlah game dirilis yang lebih sedikit. Namun, perbedaan antara platform paling populer dan paling tidak populer (Mobile) tidak terlalu jauh.
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+### Drop Unused Column
+Pada tahap ini, dibuat dataframe baru untuk menyimpan hasil preprocessing: game_df. Kolom release year, platform, dan user rating tidak memengaruhi hasil rekomendasi, sehingga didrop dari game_df.
+
+Informasi dataframe game_df setelah penghapusan adalah sebagai berikut
+
+![game_df](https://github.com/user-attachments/assets/da4cb853-75f3-4ce0-bb78-e4e4183064a7)
+
+### Penggabungan Genre
+Pada tahap Data Understanding diketahui bahwa sebuah game dapat memiliki entry dengan genre yang berbeda. Sehingga dilakukan penggabungan fitur dari seluruh genre. Penggabungan dilakukan dengan menggabungkan masing-masing genre dipisah dengan tanda koma(,). Setelah masing-masing genre digabungkan, pada dataframe tersisa 58 baris. Hal ini sama dengan jumlah nama game yang unik.
 
 ## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+### Perhitungan TF-IDF
+Langkah pertama dalam pembangunan model content-based recommendation model ini adalah penerapan TF-IDF pada kolom genre. TF-IDF adalah metode yang untuk menentukan seberapa penting suatu kata dalam kumpulan string yang dalam hal ini adalah genre. 
+
+Pada tahap ini, dilakukan beberapa langkah yaitu:
+1. Pembuatan Vector fitur dengan Vectorizer
+2. Hasil dari tahap ini adalah sebuah vektor yang berisi kata-kata penting dalam kolom genre. Ditemukan 15 kata penting dari kolom genre. Hasil ini berbeda dengan jumlah genre unik, dikarenakan salah satu genre 'role-playing' dianggap menjadi 2 kata berbeda yaitu 'role' dan 'playing'.
+
+
 
 ## Evaluation
 Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
