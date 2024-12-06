@@ -45,8 +45,6 @@ Variabel-variabel pada dataset Air Quality in South Tangerang adalah sebagai ber
 | Critical Component | Komponen dengan nilai pengukuran tertinggi | 
 | Category | Kategori dari polusi udara, berdasarkan nilai pengukuran tertinggi | 
 
-
-### Target Variable
 Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 
 ### Analisis Data Kosong dan Duplikat
@@ -54,7 +52,7 @@ Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 Dari 1096 data, tidak ada data pengukuran yang tanggalnya (kolom Date) bersifat duplikat. Sehingga tidak dilakukan penghapusan data duplikat. Kemudian dilakukan pengecekan terhadap data yang bersifat null. Pada tahap ini, ditemukan 60 data yang pengukuran O3 (Ozon)-nya bernilai null.
 
 ### Analisis dan Handling Outliers
-Telah dilakukan analisis univariat pada data menggunakan box plot yang dapat dilihat pada gambar berikut:
+Untuk mengetahui keberadaan data yang berupa outlier, data divisualisasikan menggunakan box plot yang dapat dilihat pada gambar berikut:
 
 ![boxplotsebelum](https://github.com/user-attachments/assets/ee6b57b1-9066-42cb-9f72-8896cc67414c)
 
