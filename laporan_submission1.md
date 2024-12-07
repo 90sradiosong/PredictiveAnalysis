@@ -51,19 +51,12 @@ Target Variable pada proyek ini adalah Max, yaitu nilai pengukuran tertinggi.
 
 Dari 1096 data, tidak ada data pengukuran yang tanggalnya (kolom Date) bersifat duplikat. Sehingga tidak dilakukan penghapusan data duplikat. Kemudian dilakukan pengecekan terhadap data yang bersifat null. Pada tahap ini, ditemukan 60 data yang pengukuran O3 (Ozon)-nya bernilai null.
 
-### Analisis dan Handling Outliers
+### Analisis Outliers
 Untuk mengetahui keberadaan data yang berupa outlier, data divisualisasikan menggunakan box plot yang dapat dilihat pada gambar berikut:
 
 ![boxplotsebelum](https://github.com/user-attachments/assets/ee6b57b1-9066-42cb-9f72-8896cc67414c)
 
-Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier. Pada tahap ini, penghapusan data pencilan dilakukan hanya pada variabel PM10 dan O3. Sedangkan pada CO dan Max, penghapusan tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak seimbang. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
-
-Penghapusan data outlier dilakukan dengan langkah-langkah sebagai berikut:
-1. Menemukan kuartil 1 (Q1) dan kuartil 3(Q3) dari data berdasarkan PM10 dan O3.
-2. Menemukan Inter Quartile Range (IQR) dari data dengan menghitung selisih antara Q1 dan Q3
-3. Menghapus data outlier yang nilainya kurang dari $$Q1 - 1.5 * IQR$$ atau lebih besar dari $$Q3 + 1.5 * IQR$$
-
-Hasil dari penghapusan outlier adalah 642 baris data.
+Dapat dilihat bahwa terdapat cukup banyak data yang dinilai sebagai outlier, terutama pada kolom PM10, O3, CO, dan Max.
 
 ### Univariate Analysis
 Nilai target variabel Max kemudian diterjemahkan menjadi 3 kategori, yaitu:
@@ -108,10 +101,21 @@ Terdapat beberapa tahapan yang dilakukan pada tahap data preparation, yaitu:
 ### Handling Missing Value
 Berdasarkan hasil analisis, ditemukan bahwa dari 1096 baris terdapat 60 data yang tidak ada nilainya. Ke-60 baris data ini kemudian dihapus dari tabel.
 
+### Handling Outliers
+
+Pada tahap ini, penghapusan data pencilan dilakukan hanya pada variabel PM10 dan O3. Sedangkan pada CO dan Max, penghapusan tidak dilakukan, dikarenakan ada kemungkinan hal ini disebabkan oleh data yang tidak seimbang. Oleh sebab itu, pada fase ini dilanjutkan ke analisis distribusi variabel.
+
+Penghapusan data outlier dilakukan dengan langkah-langkah sebagai berikut:
+1. Menemukan kuartil 1 (Q1) dan kuartil 3(Q3) dari data berdasarkan PM10 dan O3.
+2. Menemukan Inter Quartile Range (IQR) dari data dengan menghitung selisih antara Q1 dan Q3
+3. Menghapus data outlier yang nilainya kurang dari $$Q1 - 1.5 * IQR$$ atau lebih besar dari $$Q3 + 1.5 * IQR$$
+
+Hasil dari penghapusan outlier adalah 642 baris data.
+
 ### Feature Engineering
 Terdapat data yang masih berupa object yaitu Date. Data Date berformat dd\mm\yyyy, sehingga dilakukan pembagian data menjadi 3 kolom yaitu "Day" yang menyimpan data dd, "Month" yang menyimpan data mm, dan "Year" yang menyimpan data "yyyy"
 
-### Encoding
+### One Hot Encoding pada kolom Critical Component
 Data Critical Component adalah data yang bersifat kategorikal. Untuk dapat diproses oleh model, maka perlu dilakukan encoding terhadap data tersebut.
 
 Dikarenakan data Critical Component adalah data yang bersifat nominal, sehingga dapat diterapkan One Hot Encoding yang menghasilkan 8 kolom baru.
@@ -120,17 +124,23 @@ Berikut adalah deskripsi data setelah encoding
 
 ![deskripsidataencoded_small](https://github.com/user-attachments/assets/834f5c70-a3eb-4940-8412-0781e48eb2d4)
 
-### Resampling
-Resampling dilakukan pada data "Category" ini dilakukan untuk meningkatkan keseimbangan pada data. Teknik resampling
- yang dipilih adalah oversampling yang dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). Teknik ini dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data sedelah dilakukan oversampling:
-
-![distribusisetelahresample](https://github.com/user-attachments/assets/47600a37-7179-488b-8064-ec53a766aad2)
-
 ### Train-test split
 Pada proyek ini, data dibagi dengan rasio train:test $$80:20$$, jumlah data setelah dilakukan train-test split adalah sebagai berikut:
-- Total # of sample in whole dataset: 1737
-- Total # of sample in train dataset: 1389
-- Total # of sample in test dataset: 348
+- Total # of sample in whole dataset: 642
+- Total # of sample in train dataset: 513
+- Total # of sample in test dataset: 129
+
+### Resampling dengan SMOTE
+Resampling dilakukan berdasarkan kolom "Category" pada himpunan data latih (X_train) hal ini dilakukan untuk menghindari data *leak*. Teknik resampling dilakukan untuk meningkatkan keseimbangan pada data. Teknik  yang dipilih adalah oversampling yang dilakukan dengan teknik Synthetic Minority Over-sampling Technique (SMOTE). SMOTE dipilih dikarenakan sample pada kategori "Unhealthy" sangat sedikit. Berikut adalah sebaran data latih sedelah dilakukan oversampling:
+
+![distribusitrainsetelahresample](https://github.com/user-attachments/assets/7607442f-5338-4c30-ade8-c98940896efd)
+
+Jumlah data latih sebelum resampling adalah 513, dan setelah resampling adalah 828 data.
+
+### One Hot Encoding pada kolom Category
+Setelah proses resampling, dilakukan one hot encoding terhadap data pada kolom Category, baik pada himpunan training maupun testing. Informasi kolom setelah implementasi one hot encoding adalah sebagai berikut:
+
+![afterohe](https://github.com/user-attachments/assets/d1e3b250-b281-4e9f-b82e-7f497c964d82)
 
 ### Standarisasi Data
 Untuk memastikan bahwa data yang menjadi input dari pelatihan dan evaluasi model terstandar dengan baik, maka dilakukan normalisasi data dengan Standard Scaler.
@@ -171,14 +181,14 @@ Berdasarkan aplikasi ke-empat model yang dipilih hasil dari perhitungan MSE-nya 
 
 | Model | Train | Test |
 | --- | --- | --- |
-| KNN	| 0.035685	| 0.03726
-| RF	| 0.000111	| 0.000346
-| Boosting	| 0.036502	| 0.036762
-| DecisionTree	| 0.0	| 0.000552
+| KNN	| 0.053161	| 0.062047
+| RF	| 0.000115	| 0.00026
+| Boosting	| 0.031441	| 0.030432
+| DecisionTree	| 0.0	| 0.001388
 
 Hasil perhitungan MSE masing-masing model divisualisasikan pada gambar sebagai berikut
 
-![perbandinganMSE](https://github.com/user-attachments/assets/5ab1ad76-09d9-4d3c-89fa-f15ebc7ed629)
+![perbandinganMSE_baru](https://github.com/user-attachments/assets/54fd7166-8492-41e8-bb1b-47a6516b084e)
 
 Dapat dilihat bahwa performa dari model Random Forest dan Decision tree mendekati nol, yang berarti kedua model ini adalah model terbaik. Tetapi, dilihat dari performa Trainnya, ada kemungkinan terjadi overfitting pada Decision Tree, hal ini dapat dilihat pada nilai MSE testingnya yang lebih besar daripada Random Forest. Sehingga dapat disimpulkan bahwa Random Forest adalah yang terbaik untuk kasus prediksi Standar Kualitas Udara ini.
 
