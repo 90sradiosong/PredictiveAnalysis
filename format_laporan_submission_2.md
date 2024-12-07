@@ -50,7 +50,7 @@ Variabel-variabel pada Top Games Dataset adalah sebagai berikut:
 
 ### Data Insight
 
-Dilakukan pengecekan terhadap jumlah game, genre, dan platform yang ada pada dataset. Berdasarkan hasil pengecekan, diketahui bahwa dataset berisi 58 game, 15 genre, dan 5 platform. 5000 data yang ada pada dataset dihasilkan dari beberapa kombinasi yang berbeda, contohnya, 1 game dapat memiliki beberapa genre atau memiliki beberapa user rating.
+Dilakukan pengecekan terhadap jumlah game, genre, dan platform yang ada pada dataset. Berdasarkan hasil pengecekan, diketahui bahwa dataset berisi 58 game, 14 genre, dan 5 platform. 5000 data yang ada pada dataset dihasilkan dari beberapa kombinasi yang berbeda, contohnya, 1 game dapat memiliki beberapa genre atau memiliki beberapa user rating.
 
 Berdasarkan pengecekan duplikasi data, ditemukan bahwa tidak ada data yang bersifat dupblikat, sedangkan pengecekan untuk missing data dilakukan dengan pengecekan entry yang bernilai null. Hasil pengecekan menyatakan bahwa tidak ada entry yang bernilai null. 
 
@@ -74,7 +74,7 @@ Informasi dataframe game_df setelah penghapusan adalah sebagai berikut
 ![game_df](https://github.com/user-attachments/assets/da4cb853-75f3-4ce0-bb78-e4e4183064a7)
 
 ### Penggabungan Genre
-Pada tahap Data Understanding diketahui bahwa sebuah game dapat memiliki entry dengan genre yang berbeda. Sehingga dilakukan penggabungan fitur dari seluruh genre. Penggabungan dilakukan dengan menggabungkan masing-masing genre dipisah dengan tanda koma(,). Setelah masing-masing genre digabungkan, pada dataframe tersisa 58 baris. Hal ini sama dengan jumlah nama game yang unik.
+Pada tahap Data Understanding diketahui bahwa sebuah game dapat memiliki entry dengan genre yang berbeda. Sehingga dilakukan penggabungan fitur dari seluruh genre. Penggabungan dilakukan dengan menggabungkan masing-masing genre dipisah dengan tanda koma(,). Setelah masing-masing genre digabungkan, pada dataframe tersisa 58 baris. Jumlah ini sama dengan jumlah nama game yang unik.
 
 ## Modeling
 
@@ -82,13 +82,33 @@ Pada tahap Data Understanding diketahui bahwa sebuah game dapat memiliki entry d
 Langkah pertama dalam pembangunan model content-based recommendation model ini adalah penerapan TF-IDF pada kolom genre. TF-IDF adalah metode yang untuk menentukan seberapa penting suatu kata dalam kumpulan string yang dalam hal ini adalah genre. 
 
 Pada tahap ini, dilakukan beberapa langkah yaitu:
-1. Pembuatan Vector fitur dengan Vectorizer
-2. Hasil dari tahap ini adalah sebuah vektor yang berisi kata-kata penting dalam kolom genre. Ditemukan 15 kata penting dari kolom genre. Hasil ini berbeda dengan jumlah genre unik, dikarenakan salah satu genre 'role-playing' dianggap menjadi 2 kata berbeda yaitu 'role' dan 'playing'.
+1. Pembuatan Vector fitur dengan Vectorizer. Hasil dari tahap ini adalah sebuah vektor yang berisi kata-kata penting dalam kolom genre. Ditemukan 15 kata penting dari kolom genre. Hasil ini berbeda dengan jumlah genre unik, dikarenakan salah satu genre 'role-playing' dianggap menjadi 2 kata berbeda yaitu 'role' dan 'playing'.
+2. Membentuk tfidf_matrix, yaitu matrix hasil transformasi dari vector yang dihasilkan pada tahap sebelumnya
+3. Membentuk matrix untuk menyimpan hasil cosine similarity dan menghitung cosine similarity dari masing-masing game berdasarkan fitur genrenya
+4. Membuat dataframe cosine_sim_df dari variabel cosine_sim dengan baris dan kolom berupa nama game
 
+Berikut adalah hasil 10 sampel game dari dataframe
 
+![cosinesimmatrix](https://github.com/user-attachments/assets/f84c41e4-5a78-4eb6-af69-be837de711e4)
 
-## Evaluation
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
+Terlihat hasil perhitungan kedekatan dari beberapa game. Sebagai contoh: Game Genshin Impact memiliki nilai kedekatan sebesar 0.958689 dengan game League of Legends:Wild Rift, yang artinya game ini memiliki genre yang mirip. Pemain Game Genshin Impact mungkin akan menyukai rekomendasi game League of Legends.
+
+### Pembuatan Model Rekomendasi
+
+Model rekomendasi dihasilkan dengan memilih game dengan cosine similarity tertinggi dari game input. Model ini dibuat pada method game_recommendation. Method ini memiliki 4 parameter
+
+1. nama_game : nama dari game yang dicari rekomendasinya
+2. similarity_data: dataframe yang menyimpan hasil perhitungan cosine similarity
+3. items: data yang akan ditampilkan, berisi nama dan hasil gabungan genre
+4. k: banyaknya jumlah rekomendasi yang diminta
+
+Method ini bekerja dengan mencari index dari nama_game yang dicari pada similarity_data. Kemudian, berdasarkan index yang ditemukan, dicari 5 entry dengan nilai similarity tertinggi. Entry ini disimpan pada sebuah variabel yang akan digunakan sebagai output.
+
+Untuk output hasil, nilai cosine similarity dari masing-masing game rekomendasi ditambahkan pada variabel output dan terakhir, items yang berisi nama game dan genre ditambahkan sebagai kolom pada data kembalian.
+
+# Evaluation
+
+Untuk melakukan evaluasi, dilakukan percobaan dengan salah satu input game yaitu "Fortnite". Fortnite memiliki data sebagai berikut:
 
 Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
 
