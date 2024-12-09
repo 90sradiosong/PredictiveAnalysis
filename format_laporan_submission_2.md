@@ -106,6 +106,9 @@ Hasil rekomendasi yang diberikan model adalah sebagai berikut:
 
 Terlihat bahwa masing-masing game memiliki nilai cosine similarity pada TOP-5 yang tinggi (lebih besar dari 0.9) yang artinya sistem ini telah memberikan rekomendasi yang baik berdasarkan genrenya.
 
-**---Ini adalah bagian akhir laporan---**
 [1] SteamDB. Steam Game Releases by Year. (2024). Dapat diakses pada: https://steamdb.info/stats/releases/ (Terakhir diakses tanggal: 09 December 2024). 
+
 [2] Arsenault, Dominic. "Video game genre, evolution and innovation." Eludamos: Journal for computer game culture 3.2 (2009): 149-176.
+
+**---Ini adalah bagian akhir laporan---**
+
