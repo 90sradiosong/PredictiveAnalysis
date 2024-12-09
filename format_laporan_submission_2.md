@@ -2,43 +2,31 @@
 
 ## Project Overview
 
-Game Digital adalah aplikasi perangkat lunak yang paling dekat dengan manusia. Sa'at ini, dalam satu tahun ada banyak sekali game yang dirilis, sehingga sulit untuk menemukan game yang sesuai dengan minat pemain. Salah satu pembeda satu game dengan game yang lain adalah genre-nya. Umumnya, pemain akan menyukai game dengan genre serupa, tetapi, sa'at ini sebuah game bisa memiliki lebih dari satu genre. Untuk itu, diperlukan suatu sistem rekomendasi yang dapat memberikan rekomenadasi game yang sesuai dengan minat pemain berdasarkan genrenya.
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa proyek ini penting untuk diselesaikan.
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-  
-  Format Referensi: [Judul Referensi](https://scholar.google.com/) 
+Video game digital (Gim) adalah aplikasi perangkat lunak yang paling dekat dengan manusia. Saat ini, ada banyak sekali gim yang dirilis. Pada tahun 2023, terdapat 14.326 game yang dirilis pada platform STEAM [1]. Banyaknya permainan membuat pemain menjadi sulit untuk menemukan game yang sesuai dengan minatnya. Salah satu faktor pembeda yang menjelaskan tipe atau karakteristik dari suatu gim adalah genre-nya [2]. Umumnya, pemain akan menyukai gim dengan genre serupa karena memiliki pengalaman bermain yang mirip. Saat ini, sebuah gim bisa memiliki lebih dari satu genre, sehingga pemain mungkin mengalami kesulitan dalam memilih permainan yang mirip dengan genre yang disukainya. Untuk itu, diperlukan suatu sistem rekomendasi yang dapat memberikan rekomendasi game yang sesuai dengan minat pemain berdasarkan genrenya.
 
 ## Business Understanding
 
-
-
-Pada bagian ini, Anda perlu menjelaskan proses klarifikasi masalah.
-
-Bagian laporan ini mencakup:
-
 ### Problem Statements
+Berdasarkan latar belakang, maka permasalah pada proyek ini adalah sebagai berikut:
 
-Rumusan masalah dari proyek ini adalah:
-1. Bagaimana membangun model rekomendasi permainan berdasarkan genrenya?
-2. Bagaimana mengevaluasi model rekomendasi permainan berdasarkan genrenya?
-
+1. Bagaimana proses pengolahan data yang tepat agar dapat model dapat memberikan rekomendasi berdasarkan genre gim?
+2. Bagaimana membangun dan mengevaluasi model rekomendasi gim berdasarkan genre?
+   
 ### Goals
+Berdasarkan problem statements, maka tujuan dari proyek ini adalah:
 
-Tujuan dari proyek ini adalah:
-- Membangun model rekomendasi berdasarkan genre
-- Mengevaluasi model rekomendasi
+1. Melakukan analisis dan pengolahan terhadap data gim.
+2. Membangun model content-based filtering.
+3. Mengevaluasi hasil rekomendasi dari model.
 
-### Solution Statements
+### Solution statements
+Solusi yang ditawarkan untuk menyelesaikan tujuan adalah sebagai berikut:
 
-Pendekatan yang dilakukan untuk mencapai tujuan adalah:
-- Menggunakan model content-based filtering
-- Melakukan evaluasi 
-
-
+1. Melakukan pembangunan model content-based filtering berdasarkan genre.
+2. Melakukan evaluasi dengan melihat hasil similarity dari Top-5 hasil rekomendasi dari model yang dibangun.
 
 ## Data Understanding
+
 Data yang digunakan pada proyek ini adalah data yang bersumber dari Kaggle yang bernama Top Games Dataset yang diunggah oleh user Waqar Ali yang terakhir diupdate pada tahun 2024. Dataset ini dapat diakses pada link berikut [link dataset] (https://www.kaggle.com/datasets/waqi786/top-games-dataset). Top Games Dataset memiliki 5000 baris data dan 5 kolom.
 
 Variabel-variabel pada Top Games Dataset adalah sebagai berikut:
@@ -52,7 +40,7 @@ Variabel-variabel pada Top Games Dataset adalah sebagai berikut:
 
 Dilakukan pengecekan terhadap jumlah game, genre, dan platform yang ada pada dataset. Berdasarkan hasil pengecekan, diketahui bahwa dataset berisi 58 game, 14 genre, dan 5 platform. 5000 data yang ada pada dataset dihasilkan dari beberapa kombinasi yang berbeda, contohnya, 1 game dapat memiliki beberapa genre atau memiliki beberapa user rating.
 
-Berdasarkan pengecekan duplikasi data, ditemukan bahwa tidak ada data yang bersifat dupblikat, sedangkan pengecekan untuk missing data dilakukan dengan pengecekan entry yang bernilai null. Hasil pengecekan menyatakan bahwa tidak ada entry yang bernilai null. 
+Berdasarkan pengecekan duplikasi data, ditemukan bahwa tidak ada data yang bersifat duplikat, sedangkan pengecekan untuk missing data dilakukan dengan pengecekan entry yang bernilai null. Hasil pengecekan menyatakan bahwa tidak ada entry yang bernilai null. 
 
 ### Univariate Analysis
 
@@ -102,7 +90,7 @@ Model rekomendasi dihasilkan dengan memilih game dengan cosine similarity tertin
 3. items: data yang akan ditampilkan, berisi nama dan hasil gabungan genre
 4. k: banyaknya jumlah rekomendasi yang diminta
 
-Method ini bekerja dengan mencari index dari nama_game yang dicari pada similarity_data. Kemudian, berdasarkan index yang ditemukan, dicari 5 entry dengan nilai similarity tertinggi. Entry ini disimpan pada sebuah variabel yang akan digunakan sebagai output.
+Method ini bekerja dengan mencari index dari nama_game yang dicari pada similarity_data. Kemudian, berdasarkan index yang ditemukan, dicari Top-5 entry dengan nilai similarity tertinggi. Entry ini disimpan pada sebuah variabel yang akan digunakan sebagai output.
 
 Untuk output hasil, nilai cosine similarity dari masing-masing game rekomendasi ditambahkan pada variabel output dan terakhir, items yang berisi nama game dan genre ditambahkan sebagai kolom pada data kembalian.
 
@@ -110,13 +98,14 @@ Untuk output hasil, nilai cosine similarity dari masing-masing game rekomendasi 
 
 Untuk melakukan evaluasi, dilakukan percobaan dengan salah satu input game yaitu "Fortnite". Fortnite memiliki data sebagai berikut:
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+![datafortnite](https://github.com/user-attachments/assets/56eb8f66-bf00-47f0-a894-743e8ee6571d)
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+Hasil rekomendasi yang diberikan model adalah sebagai berikut:
+
+![hasilrekomendasi](https://github.com/user-attachments/assets/c6528482-e7a8-472a-82ed-075e624bbe4f)
+
+Terlihat bahwa masing-masing game memiliki nilai cosine similarity pada TOP-5 yang tinggi (lebih besar dari 0.9) yang artinya sistem ini telah memberikan rekomendasi yang baik berdasarkan genrenya.
 
 **---Ini adalah bagian akhir laporan---**
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+[1] SteamDB. Steam Game Releases by Year. (2024). Dapat diakses pada: https://steamdb.info/stats/releases/ (Terakhir diakses tanggal: 09 December 2024). 
+[2] Arsenault, Dominic. "Video game genre, evolution and innovation." Eludamos: Journal for computer game culture 3.2 (2009): 149-176.
