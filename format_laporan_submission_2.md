@@ -16,14 +16,13 @@ Berdasarkan latar belakang, maka permasalah pada proyek ini adalah sebagai berik
 Berdasarkan problem statements, maka tujuan dari proyek ini adalah:
 
 1. Melakukan analisis dan pengolahan terhadap data gim.
-2. Membangun model content-based filtering.
-3. Mengevaluasi hasil rekomendasi dari model.
+2. Membangun model content-based filtering dan mengevaluasinya.
 
 ### Solution statements
 Solusi yang ditawarkan untuk menyelesaikan tujuan adalah sebagai berikut:
 
 1. Melakukan pembangunan model content-based filtering berdasarkan genre.
-2. Melakukan evaluasi dengan melihat hasil similarity dari Top-5 hasil rekomendasi dari model yang dibangun.
+2. Melakukan evaluasi dengan melihat hasil similarity dari Top-N hasil rekomendasi dari model yang dibangun dengan precision@K
 
 ## Data Understanding
 
@@ -64,15 +63,13 @@ Informasi dataframe game_df setelah penghapusan adalah sebagai berikut
 ### Penggabungan Genre
 Pada tahap Data Understanding diketahui bahwa sebuah game dapat memiliki entry dengan genre yang berbeda. Sehingga dilakukan penggabungan fitur dari seluruh genre. Penggabungan dilakukan dengan menggabungkan masing-masing genre dipisah dengan tanda koma(,). Setelah masing-masing genre digabungkan, pada dataframe tersisa 58 baris. Jumlah ini sama dengan jumlah nama game yang unik.
 
-## Modeling
-
 ### Perhitungan TF-IDF
 Langkah pertama dalam pembangunan model content-based recommendation model ini adalah penerapan TF-IDF pada kolom genre. TF-IDF adalah metode yang untuk menentukan seberapa penting suatu kata dalam kumpulan string yang dalam hal ini adalah genre. 
 
 Pada tahap ini, dilakukan beberapa langkah yaitu:
 1. Pembuatan Vector fitur dengan Vectorizer. Hasil dari tahap ini adalah sebuah vektor yang berisi kata-kata penting dalam kolom genre. Ditemukan 15 kata penting dari kolom genre. Hasil ini berbeda dengan jumlah genre unik, dikarenakan salah satu genre 'role-playing' dianggap menjadi 2 kata berbeda yaitu 'role' dan 'playing'.
 2. Membentuk tfidf_matrix, yaitu matrix hasil transformasi dari vector yang dihasilkan pada tahap sebelumnya
-3. Membentuk matrix untuk menyimpan hasil cosine similarity dan menghitung cosine similarity dari masing-masing game berdasarkan fitur genrenya
+3. Membentuk matrix untuk menyimpan hasil cosine similarity dan menghitung cosine similarity dari masing-masing game berdasarkan fitur genrenya. Cosine similarity adalah ukuran kesamaan antara dua vektor dengan menghitung kosinus sudut di antara keduanya. Dalam hal ini, vektor yang dihitung kesamaannya adalah gabungan dari berbagai genre pada kolom Genre.
 4. Membuat dataframe cosine_sim_df dari variabel cosine_sim dengan baris dan kolom berupa nama game
 
 Berikut adalah hasil 10 sampel game dari dataframe
@@ -81,7 +78,9 @@ Berikut adalah hasil 10 sampel game dari dataframe
 
 Terlihat hasil perhitungan kedekatan dari beberapa game. Sebagai contoh: Game Genshin Impact memiliki nilai kedekatan sebesar 0.958689 dengan game League of Legends:Wild Rift, yang artinya game ini memiliki genre yang mirip. Pemain Game Genshin Impact mungkin akan menyukai rekomendasi game League of Legends.
 
-### Pembuatan Model Rekomendasi
+## Modeling and Results
+
+### Model Development menggunakan Content-Based Filtering
 
 Model rekomendasi dihasilkan dengan memilih game dengan cosine similarity tertinggi dari game input. Model ini dibuat pada method game_recommendation. Method ini memiliki 4 parameter
 
@@ -90,11 +89,11 @@ Model rekomendasi dihasilkan dengan memilih game dengan cosine similarity tertin
 3. items: data yang akan ditampilkan, berisi nama dan hasil gabungan genre
 4. k: banyaknya jumlah rekomendasi yang diminta
 
-Method ini bekerja dengan mencari index dari nama_game yang dicari pada similarity_data. Kemudian, berdasarkan index yang ditemukan, dicari Top-5 entry dengan nilai similarity tertinggi. Entry ini disimpan pada sebuah variabel yang akan digunakan sebagai output.
+Method ini bekerja dengan mencari index dari nama_game yang dicari pada similarity_data. Kemudian, berdasarkan index yang ditemukan, dicari Top-K entry dengan nilai similarity tertinggi. Entry ini disimpan pada sebuah variabel yang akan digunakan sebagai output.
 
 Untuk output hasil, nilai cosine similarity dari masing-masing game rekomendasi ditambahkan pada variabel output dan terakhir, items yang berisi nama game dan genre ditambahkan sebagai kolom pada data kembalian.
 
-# Evaluation
+### Result
 
 Untuk melakukan evaluasi, dilakukan percobaan dengan salah satu input game yaitu "Fortnite". Fortnite memiliki data sebagai berikut:
 
@@ -105,6 +104,23 @@ Hasil rekomendasi yang diberikan model adalah sebagai berikut:
 ![hasilrekomendasi](https://github.com/user-attachments/assets/c6528482-e7a8-472a-82ed-075e624bbe4f)
 
 Terlihat bahwa masing-masing game memiliki nilai cosine similarity pada TOP-5 yang tinggi (lebih besar dari 0.9) yang artinya sistem ini telah memberikan rekomendasi yang baik berdasarkan genrenya.
+
+# Evaluation
+
+Untuk mengevaluasi model yang telah dibangun, dilakukan perhitungan menggunakan precision@K. Precision@K adalah sebuah metrik yang dapat digunakan untuk menghitung kualitas rekomendasi, di mana nilai yang lebih tinggi menyatakan rekomendasi yang lebih baik. Adapun formula yang digunakan untuk menghitung nilai tersebut adalah sebagai berikut
+
+$$ Precision@K = \frac{Jumlah\ item\ yang\ relevan\ pada\ Top-K}{K}$$
+
+Pada proyek ini, perhitungan precision@K dilakukan untuk k=1 sampai dengan k=5. Hasilnya adalah sebagai berikut:
+
+![precisionatk](https://github.com/user-attachments/assets/f83b5491-0785-4223-be0e-c7833bbc19e4)
+
+Berdasarkan hasil evaluasi, dapat dilihat pada nilai precision@K yang terbaik adalah K = 2, artinya rekomendasi yang paling relevan akan diberikan pada K = 2.
+
+Pada proyek ini, data dari permainan berdasarkan genre-nya telah diproses dan digunakan untuk membangun model rekomendasi Content-based Filtering berdasarkan genrenya. Model rekomendasi yang telah dibangun dapat merekomendasikan permainan dengan genre yang kemiripannya di atas 0.9. Untuk memastikan kualitas rekomendasinya, model tersebut kemudian dievaluasi. Evaluasi yang dipilih adalah precision@K. Metriks ini  dengan metrik precision@K yang memberikan hasil terbaik yaitu 92.0 pada K=2, selanjutnya nilai precision@K menurun.
+
+
+# Referensi
 
 [1] SteamDB. Steam Game Releases by Year. (2024). Dapat diakses pada: https://steamdb.info/stats/releases/ (Terakhir diakses tanggal: 09 December 2024). 
 
